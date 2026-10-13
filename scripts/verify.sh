@@ -35,7 +35,7 @@ npm run build && ok "Build successful" || fail "Build failed"
 
 # 6. Security audit
 step "npm audit (high severity)"
-npm audit --audit-level=high && ok "No high-severity vulnerabilities" || fail "Security vulnerabilities found"
+node scripts/audit-check.mjs && ok "No high-severity vulnerabilities" || fail "Security vulnerabilities found"
 
 echo
 echo "======================================"
