@@ -70,7 +70,11 @@ export function listRevisions(siteId: string): Revision[] {
 }
 
 function addRevision(rev: Omit<Revision, 'id' | 'createdAt'>): Revision {
-  const full: Revision = { ...rev, id: `rev_${randomUUID().slice(0, 8)}`, createdAt: new Date().toISOString() }
+  const full: Revision = {
+    ...rev,
+    id: `rev_${randomUUID().slice(0, 8)}`,
+    createdAt: new Date().toISOString(),
+  }
   const all = readJson<Revision[]>(revFile(rev.siteId)) ?? []
   all.push(full)
   writeJson(revFile(rev.siteId), all)
@@ -93,6 +97,12 @@ export function restoreRevision(siteId: string, revisionId: string) {
   const target = listRevisions(siteId).find((r) => r.id === revisionId)
   if (!current || !target) throw new Error('리비전을 찾을 수 없어')
   saveSite(target.snapshot)
-  const revision = addRevision({ siteId, snapshot: current, ops: [], author: 'user', summary: `되돌리기: ${target.summary}` })
+  const revision = addRevision({
+    siteId,
+    snapshot: current,
+    ops: [],
+    author: 'user',
+    summary: `되돌리기: ${target.summary}`,
+  })
   return { site: target.snapshot, revision }
 }

@@ -19,11 +19,14 @@ export function EditorShell({ initialSite }: { initialSite: Site }) {
   return (
     <div className="flex h-screen flex-col">
       <header className="flex items-center gap-3 border-b bg-white px-4 py-2.5">
-        <Link href="/" className="rounded-lg bg-primary px-2.5 py-1 text-sm font-bold text-primary-foreground">
+        <Link
+          href="/"
+          className="bg-primary text-primary-foreground rounded-lg px-2.5 py-1 text-sm font-bold"
+        >
           Pagely
         </Link>
         <span className="text-sm font-semibold">{initialSite.name}</span>
-        <span className="text-xs text-muted-foreground">에디터</span>
+        <span className="text-muted-foreground text-xs">에디터</span>
       </header>
       {ready ? (
         <div className="flex min-h-0 flex-1">
@@ -32,7 +35,7 @@ export function EditorShell({ initialSite }: { initialSite: Site }) {
           <ChatPane />
         </div>
       ) : (
-        <p className="p-6 text-sm text-muted-foreground">불러오는 중…</p>
+        <p className="text-muted-foreground p-6 text-sm">불러오는 중…</p>
       )}
     </div>
   )

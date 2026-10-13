@@ -12,7 +12,12 @@ const TONE_KEYWORDS: [Tone, RegExp][] = [
   ['warm', /따뜻|포근|아늑|친근/],
 ]
 
-const DEFAULT_TONE: Record<Industry, Tone> = { church: 'warm', cafe: 'warm', agency: 'modern', generic: 'modern' }
+const DEFAULT_TONE: Record<Industry, Tone> = {
+  church: 'warm',
+  cafe: 'warm',
+  agency: 'modern',
+  generic: 'modern',
+}
 const DEFAULT_NAME = '내 사이트'
 
 function findName(text: string): string {

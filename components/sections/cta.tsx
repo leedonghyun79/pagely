@@ -4,7 +4,11 @@ export function Cta({ section, base }: SectionProps<'cta'>) {
   const { title, body, button } = section.props
   const card = section.variant === 'card'
   return (
-    <section data-section-id={section.id} className="px-6 py-16" style={{ background: 'var(--o-bg)' }}>
+    <section
+      data-section-id={section.id}
+      className="px-6 py-16"
+      style={{ background: 'var(--o-bg)' }}
+    >
       <div
         className={`mx-auto max-w-4xl px-8 py-12 text-center ${card ? 'border bg-white/70' : 'text-white'}`}
         style={{

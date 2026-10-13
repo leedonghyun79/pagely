@@ -7,7 +7,7 @@ import { createDraft } from '@/lib/site/draft'
 
 let dir: string
 beforeEach(() => {
-  dir = fs.mkdtempSync(path.join(os.tmpdir(), 'opennow-'))
+  dir = fs.mkdtempSync(path.join(os.tmpdir(), 'pagely-'))
   process.env.DATA_DIR = dir
 })
 afterEach(() => {
@@ -27,8 +27,18 @@ describe('db', () => {
   it('commitOps는 리비전을 최신순으로 쌓고, restore로 되돌린다', () => {
     const site = createDraft({ name: 'A', industry: 'cafe', tone: 'modern' })
     saveSite(site)
-    commitOps(site.id, [{ op: 'update_design_tokens', tokens: { primary: '#111111' } }], 'user', '색 변경')
-    commitOps(site.id, [{ op: 'update_design_tokens', tokens: { primary: '#222222' } }], 'ai', '색 변경2')
+    commitOps(
+      site.id,
+      [{ op: 'update_design_tokens', tokens: { primary: '#111111' } }],
+      'user',
+      '색 변경'
+    )
+    commitOps(
+      site.id,
+      [{ op: 'update_design_tokens', tokens: { primary: '#222222' } }],
+      'ai',
+      '색 변경2'
+    )
     const revs = listRevisions(site.id)
     expect(revs.map((r) => r.summary)).toEqual(['색 변경2', '색 변경'])
 

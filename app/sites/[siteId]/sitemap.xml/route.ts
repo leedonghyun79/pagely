@@ -8,5 +8,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ siteId: 
   const site = getSite(siteId)
   if (!site) return new Response('Not found', { status: 404 })
   const origin = `${new URL(req.url).origin}/preview/${site.id}`
-  return new Response(buildSitemap(site, origin), { headers: { 'Content-Type': 'application/xml; charset=utf-8' } })
+  return new Response(buildSitemap(site, origin), {
+    headers: { 'Content-Type': 'application/xml; charset=utf-8' },
+  })
 }

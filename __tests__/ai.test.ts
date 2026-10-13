@@ -11,7 +11,10 @@ const llm = new MockLlmClient()
 describe('toOp', () => {
   it('유효한 인자는 Op로 변환한다', () => {
     const hero = site.pages[0].sections[0]
-    const op = toOp({ name: 'update_section', args: { route: '/', sectionId: hero.id, props: { title: 'x' } } })
+    const op = toOp({
+      name: 'update_section',
+      args: { route: '/', sectionId: hero.id, props: { title: 'x' } },
+    })
     expect(op.op).toBe('update_section')
   })
 

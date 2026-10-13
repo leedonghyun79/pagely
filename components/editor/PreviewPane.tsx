@@ -13,11 +13,24 @@ const DEVICES: { id: Device; label: string; Icon: typeof Monitor }[] = [
 ]
 
 export function PreviewPane() {
-  const { site, route, device, editMode, previewVersion, selectedSectionId, setRoute, setDevice, refresh, select } =
-    useEditorStore()
+  const {
+    site,
+    route,
+    device,
+    editMode,
+    previewVersion,
+    selectedSectionId,
+    setRoute,
+    setDevice,
+    refresh,
+    select,
+  } = useEditorStore()
   const frame = useRef<HTMLIFrameElement>(null)
   const highlight = useCallback(() => {
-    frame.current?.contentWindow?.postMessage({ type: MSG.highlight, id: selectedSectionId }, window.location.origin)
+    frame.current?.contentWindow?.postMessage(
+      { type: MSG.highlight, id: selectedSectionId },
+      window.location.origin
+    )
   }, [selectedSectionId])
 
   useEffect(() => {
@@ -37,9 +50,9 @@ export function PreviewPane() {
   const src = `/preview/${site.id}${route === '/' ? '' : route}?edit=${editMode ? 1 : 0}&v=${previewVersion}`
 
   return (
-    <div className="flex h-full min-w-0 flex-1 flex-col bg-muted/60">
+    <div className="bg-muted/60 flex h-full min-w-0 flex-1 flex-col">
       <div className="flex items-center gap-3 border-b bg-white px-4 py-2.5">
-        <div className="flex gap-1 rounded-lg bg-secondary p-1">
+        <div className="bg-secondary flex gap-1 rounded-lg p-1">
           {DEVICES.map(({ id, label, Icon }) => (
             <button
               key={id}
@@ -68,7 +81,11 @@ export function PreviewPane() {
             className="h-8 w-full max-w-xs rounded-lg border bg-white px-3 text-sm"
           />
         </form>
-        <button onClick={refresh} aria-label="새로고침" className="rounded-lg border bg-white p-2 hover:bg-muted">
+        <button
+          onClick={refresh}
+          aria-label="새로고침"
+          className="hover:bg-muted rounded-lg border bg-white p-2"
+        >
           <RotateCw className="size-3.5" />
         </button>
       </div>

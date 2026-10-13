@@ -15,11 +15,16 @@ export async function runChat(
   site: Site,
   message: string,
   ctx: { selectedSectionId?: string },
-  llm: LlmClient,
+  llm: LlmClient
 ): Promise<ChatResult> {
   let previousError: string | undefined
   for (let attempt = 0; attempt < 2; attempt++) {
-    const out = await llm.complete({ message, site, selectedSectionId: ctx.selectedSectionId, previousError })
+    const out = await llm.complete({
+      message,
+      site,
+      selectedSectionId: ctx.selectedSectionId,
+      previousError,
+    })
     if (out.toolCalls.length === 0) return { site, ops: [], text: out.text, changed: false }
     try {
       const ops = toOps(out.toolCalls)

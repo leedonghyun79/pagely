@@ -6,7 +6,8 @@ import './landing/landing.css'
 
 export const metadata: Metadata = {
   title: '아이디어 한 줄로 웹사이트 만들기 — Pagely',
-  description: '만들고 싶은 웹사이트의 컨셉을 한 줄로 적으면 홈·소개·문의 3페이지 초안이 바로 만들어져요.',
+  description:
+    '만들고 싶은 웹사이트의 컨셉을 한 줄로 적으면 홈·소개·문의 3페이지 초안이 바로 만들어져요.',
   alternates: { canonical: '/' },
 }
 
@@ -44,7 +45,10 @@ export default function Home() {
           <h2 className="lp-serif mb-6 text-2xl font-black md:text-3xl">제작 사례</h2>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-[repeat(3,370px)] lg:justify-between">
             {Array.from({ length: 6 }, (_, i) => (
-              <div key={i} className="overflow-hidden rounded-2xl border border-[var(--ink)] bg-white">
+              <div
+                key={i}
+                className="overflow-hidden rounded-2xl border border-[var(--ink)] bg-white"
+              >
                 <div className="aspect-[372/264] bg-[var(--paper)]" />
                 <div className="border-t border-[var(--line)] px-4 py-3 text-sm text-[var(--muted)]">
                   제작 사례 {i + 1}

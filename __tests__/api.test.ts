@@ -9,7 +9,7 @@ import { GET as listRevs, POST as restore } from '@/app/api/sites/[id]/revisions
 
 let dir: string
 beforeEach(() => {
-  dir = fs.mkdtempSync(path.join(os.tmpdir(), 'opennow-api-'))
+  dir = fs.mkdtempSync(path.join(os.tmpdir(), 'pagely-api-'))
   process.env.DATA_DIR = dir
 })
 afterEach(() => {
@@ -18,12 +18,18 @@ afterEach(() => {
 })
 
 const post = (body: unknown) =>
-  new Request('http://x.test', { method: 'POST', body: JSON.stringify(body), headers: { 'Content-Type': 'application/json' } })
+  new Request('http://x.test', {
+    method: 'POST',
+    body: JSON.stringify(body),
+    headers: { 'Content-Type': 'application/json' },
+  })
 const ctx = (id: string) => ({ params: Promise.resolve({ id }) })
 
 describe('api', () => {
   it('아이디어 문장으로 초안을 만든다', async () => {
-    const site = await (await createSite(post({ idea: '"달빛"이라는 모던한 카페 홈페이지' }))).json()
+    const site = await (
+      await createSite(post({ idea: '"달빛"이라는 모던한 카페 홈페이지' }))
+    ).json()
     expect(site.name).toBe('달빛')
     expect(site.pages).toHaveLength(3)
   })
@@ -33,7 +39,9 @@ describe('api', () => {
   })
 
   it('초안 생성 → 채팅 수정 → 되돌리기', async () => {
-    const site = await (await createSite(post({ name: '은혜교회', industry: 'church', tone: 'warm' }))).json()
+    const site = await (
+      await createSite(post({ name: '은혜교회', industry: 'church', tone: 'warm' }))
+    ).json()
     expect(site.pages).toHaveLength(3)
 
     const before = site.pages[0].sections[0].props.title
@@ -51,8 +59,13 @@ describe('api', () => {
   it('잘못된 입력은 400, 없는 사이트는 404', async () => {
     expect((await createSite(post({ name: '', industry: 'x', tone: 'y' }))).status).toBe(400)
     expect((await chat(post({ message: '안녕' }), ctx('nope'))).status).toBe(404)
-    const site = await (await createSite(post({ name: 'A', industry: 'cafe', tone: 'modern' }))).json()
-    const bad = await ops(post({ ops: [{ op: 'update_section', route: '/', sectionId: 'zzz', props: {} }] }), ctx(site.id))
+    const site = await (
+      await createSite(post({ name: 'A', industry: 'cafe', tone: 'modern' }))
+    ).json()
+    const bad = await ops(
+      post({ ops: [{ op: 'update_section', route: '/', sectionId: 'zzz', props: {} }] }),
+      ctx(site.id)
+    )
     expect(bad.status).toBe(404)
   })
 })

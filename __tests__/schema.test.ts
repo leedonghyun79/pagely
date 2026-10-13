@@ -23,7 +23,12 @@ describe('SectionSchema', () => {
   })
 
   it('해당 type에 없는 variant는 거부한다', () => {
-    const r = SectionSchema.safeParse({ id: 'x', type: 'hero', variant: 'grid', props: { title: 't' } })
+    const r = SectionSchema.safeParse({
+      id: 'x',
+      type: 'hero',
+      variant: 'grid',
+      props: { title: 't' },
+    })
     expect(r.success).toBe(false)
   })
 })

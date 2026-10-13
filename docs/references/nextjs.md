@@ -39,14 +39,14 @@ types/              # TypeScript 타입
 // 서버 컴포넌트 — 직접 fetch
 async function Page() {
   const data = await fetch('https://api.example.com/data', {
-    cache: 'no-store',         // 항상 최신
-    next: { revalidate: 60 }  // 60초 캐시
-  });
+    cache: 'no-store', // 항상 최신
+    next: { revalidate: 60 }, // 60초 캐시
+  })
 }
 
 // 클라이언트 컴포넌트 — SWR 또는 React Query
-'use client';
-const { data } = useSWR('/api/data', fetcher);
+;('use client')
+const { data } = useSWR('/api/data', fetcher)
 ```
 
 ## Route Handler (API)
@@ -54,12 +54,12 @@ const { data } = useSWR('/api/data', fetcher);
 ```ts
 // app/api/example/route.ts
 export async function GET(request: Request) {
-  return Response.json({ data: '...' });
+  return Response.json({ data: '...' })
 }
 
 export async function POST(request: Request) {
-  const body = await request.json();
-  return Response.json({ success: true }, { status: 201 });
+  const body = await request.json()
+  return Response.json({ success: true }, { status: 201 })
 }
 ```
 
@@ -68,15 +68,15 @@ export async function POST(request: Request) {
 ```ts
 // middleware.ts
 export function middleware(request: NextRequest) {
-  const token = request.cookies.get('token');
+  const token = request.cookies.get('token')
   if (!token) {
-    return NextResponse.redirect(new URL('/login', request.url));
+    return NextResponse.redirect(new URL('/login', request.url))
   }
 }
 
 export const config = {
   matcher: ['/dashboard/:path*', '/admin/:path*'],
-};
+}
 ```
 
 ## 자주 쓰는 패턴

@@ -1,4 +1,4 @@
-# Opennow
+# Pagely
 
 채팅으로 사이트를 만들고 고치는 AI 웹빌더 (뼈대 v0).
 
@@ -15,4 +15,4 @@ npm run verify     # typecheck + lint + test + build
 3. 채팅 예: "히어로 문구 더 짧게", "FAQ 추가해줘", "파랑으로 바꿔줘". 프리뷰에서 섹션을 클릭하면 그 섹션만 수정한다.
 4. 채팅 응답의 "되돌리기"로 직전 변경을 복원한다.
 
-AI는 현재 mock(키워드 규칙)이다. 구조는 [ARCHITECTURE.md](ARCHITECTURE.md), 스펙은 [docs/product-specs/opennow-skeleton.md](docs/product-specs/opennow-skeleton.md) 참고.
+AI는 현재 mock(키워드 규칙)이다. 구조는 [ARCHITECTURE.md](ARCHITECTURE.md), 스펙은 [docs/product-specs/pagely-skeleton.md](docs/product-specs/pagely-skeleton.md) 참고.

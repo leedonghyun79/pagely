@@ -16,7 +16,11 @@ function load(siteId: string, route?: string[]) {
   return { site, page }
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ siteId: string; route?: string[] }> }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ siteId: string; route?: string[] }>
+}): Promise<Metadata> {
   const { siteId, route } = await params
   const { page } = load(siteId, route)
   if (!page) return {}
@@ -24,7 +28,11 @@ export async function generateMetadata({ params }: { params: Promise<{ siteId: s
     title: page.title,
     description: page.seo.description,
     robots: page.seo.noindex ? { index: false, follow: false } : undefined,
-    openGraph: { title: page.title, description: page.seo.description, images: page.seo.ogImage ? [page.seo.ogImage] : undefined },
+    openGraph: {
+      title: page.title,
+      description: page.seo.description,
+      images: page.seo.ogImage ? [page.seo.ogImage] : undefined,
+    },
   }
 }
 
@@ -44,7 +52,11 @@ export default async function PreviewPage({
   return (
     <div style={tokenStyle(site.tokens)} className="min-h-screen">
       {buildJsonLd(site).map((ld, i) => (
-        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
+        <script
+          key={i}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }}
+        />
       ))}
       <header
         className="flex items-center justify-between border-b px-6 py-4"
@@ -56,7 +68,9 @@ export default async function PreviewPage({
         <nav className="flex gap-5 text-sm">
           {site.pages.map((p) => (
             <a key={p.route} href={p.route === '/' ? base : base + p.route}>
-              {p.route === '/' ? '홈' : p.title.replace(site.name, '').replace(/^[\s-]+/, '') || p.route}
+              {p.route === '/'
+                ? '홈'
+                : p.title.replace(site.name, '').replace(/^[\s-]+/, '') || p.route}
             </a>
           ))}
         </nav>

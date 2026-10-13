@@ -19,13 +19,15 @@ describe('applyOps', () => {
     const site = base()
     const hero = site.pages[0].sections[0]
     expect(() =>
-      applyOps(site, [{ op: 'update_section', route: '/', sectionId: hero.id, props: { title: '' } }]),
+      applyOps(site, [
+        { op: 'update_section', route: '/', sectionId: hero.id, props: { title: '' } },
+      ])
     ).toThrow()
   })
 
   it('없는 sectionId는 throw한다', () => {
     expect(() =>
-      applyOps(base(), [{ op: 'remove_section', route: '/', sectionId: 'nope' }]),
+      applyOps(base(), [{ op: 'remove_section', route: '/', sectionId: 'nope' }])
     ).toThrow()
   })
 
@@ -43,7 +45,7 @@ describe('applyOps', () => {
     ])
     expect(variant.pages[0].sections[0].variant).toBe('split')
     expect(() =>
-      applyOps(site, [{ op: 'change_variant', route: '/', sectionId: a.id, variant: 'bogus' }]),
+      applyOps(site, [{ op: 'change_variant', route: '/', sectionId: a.id, variant: 'bogus' }])
     ).toThrow()
 
     const t = applyOps(site, [{ op: 'update_design_tokens', tokens: { primary: '#112233' } }])

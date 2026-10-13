@@ -11,7 +11,17 @@ export interface Brief {
   tone: Tone
 }
 
-const COPY: Record<Industry, { eyebrow: string; title: string; subtitle: string; cta: string; features: [string, string][]; faq: [string, string][] }> = {
+const COPY: Record<
+  Industry,
+  {
+    eyebrow: string
+    title: string
+    subtitle: string
+    cta: string
+    features: [string, string][]
+    faq: [string, string][]
+  }
+> = {
   church: {
     eyebrow: '처음 오신 분을 환영합니다',
     title: '복음으로 세우는 교회',
@@ -116,7 +126,10 @@ export function createDraft(brief: Brief): Site {
             id: sid('features'),
             type: 'features',
             variant: 'grid',
-            props: { title: `${name}의 특징`, items: c.features.map(([title, body]) => ({ title, body })) },
+            props: {
+              title: `${name}의 특징`,
+              items: c.features.map(([title, body]) => ({ title, body })),
+            },
           },
           {
             id: sid('faq'),
@@ -162,7 +175,11 @@ export function createDraft(brief: Brief): Site {
             id: sid('cta'),
             type: 'cta',
             variant: 'card',
-            props: { title: '전화로 바로 문의', body: '평일 10:00 - 18:00', button: { label: '전화하기', href: 'tel:0000000000' } },
+            props: {
+              title: '전화로 바로 문의',
+              body: '평일 10:00 - 18:00',
+              button: { label: '전화하기', href: 'tel:0000000000' },
+            },
           },
         ],
       },

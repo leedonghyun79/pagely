@@ -1,7 +1,6 @@
 import type { Site } from '@/lib/schema/site'
 
-const esc = (s: string) =>
-  s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 
 export function buildSitemap(site: Site, origin: string): string {
   const urls = site.pages
@@ -16,9 +15,11 @@ export function buildRobots(origin: string): string {
 }
 
 export function buildJsonLd(site: Site): object[] {
-  const out: object[] = [{ '@context': 'https://schema.org', '@type': 'Organization', name: site.name }]
+  const out: object[] = [
+    { '@context': 'https://schema.org', '@type': 'Organization', name: site.name },
+  ]
   const faqs = site.pages.flatMap((p) =>
-    p.sections.flatMap((s) => (s.type === 'faq' ? s.props.items : [])),
+    p.sections.flatMap((s) => (s.type === 'faq' ? s.props.items : []))
   )
   if (faqs.length > 0) {
     out.push({

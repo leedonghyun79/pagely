@@ -39,7 +39,16 @@ let seq = 0
 const mid = () => `m_${++seq}`
 
 async function api<T>(url: string, body?: unknown): Promise<T> {
-  const res = await fetch(url, body === undefined ? undefined : { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+  const res = await fetch(
+    url,
+    body === undefined
+      ? undefined
+      : {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        }
+  )
   const data = await res.json()
   if (!res.ok) throw new Error(data.error ?? '요청에 실패했어')
   return data as T
@@ -68,7 +77,15 @@ export const useEditorStore = create<EditorState>((set, get) => {
     busy: false,
     error: null,
 
-    init: (site) => set({ site, route: '/', selectedSectionId: null, messages: [], previewVersion: 0, error: null }),
+    init: (site) =>
+      set({
+        site,
+        route: '/',
+        selectedSectionId: null,
+        messages: [],
+        previewVersion: 0,
+        error: null,
+      }),
     setRoute: (route) => set({ route, selectedSectionId: null }),
     select: (id) => {
       const site = get().site
@@ -76,7 +93,8 @@ export const useEditorStore = create<EditorState>((set, get) => {
       set({ selectedSectionId: id, route: page?.route ?? get().route })
     },
     setDevice: (device) => set({ device }),
-    toggleEditMode: () => set((s) => ({ editMode: !s.editMode, previewVersion: s.previewVersion + 1 })),
+    toggleEditMode: () =>
+      set((s) => ({ editMode: !s.editMode, previewVersion: s.previewVersion + 1 })),
     refresh: () => set((s) => ({ previewVersion: s.previewVersion + 1 })),
 
     sendChat: (message) =>
@@ -86,11 +104,19 @@ export const useEditorStore = create<EditorState>((set, get) => {
         set((s) => ({ messages: [...s.messages, { id: mid(), role: 'user', text: message }] }))
         const res = await api<{ text: string; changed: boolean; site: Site; revisionId?: string }>(
           `/api/sites/${site.id}/chat`,
-          { message, selectedSectionId: selectedSectionId ?? undefined },
+          { message, selectedSectionId: selectedSectionId ?? undefined }
         )
         set((s) => ({
           site: res.site,
-          messages: [...s.messages, { id: mid(), role: 'ai', text: res.text, revisionId: res.changed ? res.revisionId : undefined }],
+          messages: [
+            ...s.messages,
+            {
+              id: mid(),
+              role: 'ai',
+              text: res.text,
+              revisionId: res.changed ? res.revisionId : undefined,
+            },
+          ],
           previewVersion: res.changed ? s.previewVersion + 1 : s.previewVersion,
         }))
       }),
@@ -99,11 +125,17 @@ export const useEditorStore = create<EditorState>((set, get) => {
       run(async () => {
         const { site } = get()
         if (!site) return
-        const res = await api<{ site: Site; revisionId: string }>(`/api/sites/${site.id}/ops`, { ops, summary })
+        const res = await api<{ site: Site; revisionId: string }>(`/api/sites/${site.id}/ops`, {
+          ops,
+          summary,
+        })
         set((s) => ({
           site: res.site,
           previewVersion: s.previewVersion + 1,
-          messages: [...s.messages, { id: mid(), role: 'ai', text: summary, revisionId: res.revisionId }],
+          messages: [
+            ...s.messages,
+            { id: mid(), role: 'ai', text: summary, revisionId: res.revisionId },
+          ],
         }))
       }),
 
@@ -112,7 +144,9 @@ export const useEditorStore = create<EditorState>((set, get) => {
         const { site, messages } = get()
         const target = messages.find((m) => m.id === messageId)
         if (!site || !target?.revisionId) return
-        const res = await api<{ site: Site }>(`/api/sites/${site.id}/revisions`, { revisionId: target.revisionId })
+        const res = await api<{ site: Site }>(`/api/sites/${site.id}/revisions`, {
+          revisionId: target.revisionId,
+        })
         const route = res.site.pages.some((p) => p.route === get().route) ? get().route : '/'
         set((s) => ({
           site: res.site,

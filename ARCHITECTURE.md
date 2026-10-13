@@ -1,9 +1,11 @@
 # 아키텍처
 
 ## 개요
-Opennow는 사이트 하나를 Zod로 검증되는 JSON 문서(`Site`)로 다룬다. 편집기 프리뷰와 공개 렌더러가 같은 섹션 컴포넌트를 쓰므로 프리뷰에서 보이는 것이 곧 결과다. 모든 변경(사람, AI)은 `applyOps` → Revision 한 경로를 거친다.
+
+Pagely는 사이트 하나를 Zod로 검증되는 JSON 문서(`Site`)로 다룬다. 편집기 프리뷰와 공개 렌더러가 같은 섹션 컴포넌트를 쓰므로 프리뷰에서 보이는 것이 곧 결과다. 모든 변경(사람, AI)은 `applyOps` → Revision 한 경로를 거친다.
 
 ## 디렉터리 구조
+
 ```
 lib/schema/     Zod 스키마 (섹션 props, DesignTokens, Page, Site)
 lib/site/       ops(순수 패치), draft(초안 생성), seo(sitemap/robots/JSON-LD)
@@ -22,6 +24,7 @@ data/                  런타임 데이터 (git 제외)
 ```
 
 ## 데이터 흐름
+
 ```
 채팅/트리 조작 → API → (AI면 LlmClient → toOps Zod 검증, 실패 시 1회 재시도)
   → commitOps: applyOps(검증) → saveSite → Revision(변경 전 snapshot)
@@ -30,12 +33,14 @@ data/                  런타임 데이터 (git 제외)
 ```
 
 ## 주요 제약 사항
+
 - TypeScript strict, 서버 컴포넌트 우선
 - 스키마 변경은 `commitOps`만 호출한다 (직접 `saveSite` 금지, 초안 생성 제외)
 - 섹션 id는 사이트 안에서 유일해야 한다 (편집 모드 선택 키)
 - 저장소 접근은 `lib/db/index.ts`에서만
 
 ## 향후 확장 포인트
+
 - 실제 Claude 연동: `LlmClient` 구현체 추가 후 chat route에서 교체
 - 저장소: `lib/db`를 Postgres로 교체 (함수 시그니처 유지)
 - 발행/도메인, 컬렉션(CMS), 폼, 미디어, 권한, 인라인 텍스트 편집

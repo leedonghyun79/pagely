@@ -35,13 +35,36 @@ function newSection(kind: 'faq' | 'testimonials' | 'cta' | 'features'): Section 
   const id = `sec_${kind}_${randomUUID().slice(0, 6)}`
   switch (kind) {
     case 'faq':
-      return { id, type: 'faq', variant: 'accordion', props: { title: '자주 묻는 질문', items: [{ q: '질문을 입력하세요', a: '답변을 입력하세요' }] } }
+      return {
+        id,
+        type: 'faq',
+        variant: 'accordion',
+        props: {
+          title: '자주 묻는 질문',
+          items: [{ q: '질문을 입력하세요', a: '답변을 입력하세요' }],
+        },
+      }
     case 'testimonials':
-      return { id, type: 'testimonials', variant: 'cards', props: { title: '후기', items: [{ name: '고객', quote: '후기를 입력하세요' }] } }
+      return {
+        id,
+        type: 'testimonials',
+        variant: 'cards',
+        props: { title: '후기', items: [{ name: '고객', quote: '후기를 입력하세요' }] },
+      }
     case 'cta':
-      return { id, type: 'cta', variant: 'banner', props: { title: '지금 시작해 보세요', button: { label: '문의하기', href: '/contact' } } }
+      return {
+        id,
+        type: 'cta',
+        variant: 'banner',
+        props: { title: '지금 시작해 보세요', button: { label: '문의하기', href: '/contact' } },
+      }
     case 'features':
-      return { id, type: 'features', variant: 'grid', props: { title: '특징', items: [{ title: '특징 1', body: '설명을 입력하세요' }] } }
+      return {
+        id,
+        type: 'features',
+        variant: 'grid',
+        props: { title: '특징', items: [{ title: '특징 1', body: '설명을 입력하세요' }] },
+      }
   }
 }
 
@@ -67,19 +90,22 @@ export class MockLlmClient implements LlmClient {
     }
 
     if (message.includes('추가')) {
-      const kind = message.includes('FAQ') || message.includes('질문')
-        ? 'faq'
-        : message.includes('후기')
-          ? 'testimonials'
-          : message.toUpperCase().includes('CTA')
-            ? 'cta'
-            : message.includes('특징')
-              ? 'features'
-              : undefined
+      const kind =
+        message.includes('FAQ') || message.includes('질문')
+          ? 'faq'
+          : message.includes('후기')
+            ? 'testimonials'
+            : message.toUpperCase().includes('CTA')
+              ? 'cta'
+              : message.includes('특징')
+                ? 'features'
+                : undefined
       if (!kind) return unknown
       return {
         text: '섹션을 추가했어.',
-        toolCalls: [{ name: 'add_section', args: { route: target?.route ?? '/', section: newSection(kind) } }],
+        toolCalls: [
+          { name: 'add_section', args: { route: target?.route ?? '/', section: newSection(kind) } },
+        ],
       }
     }
 
@@ -89,7 +115,9 @@ export class MockLlmClient implements LlmClient {
       if (!picked) return { text: '삭제할 섹션을 프리뷰에서 먼저 선택해줘.', toolCalls: [] }
       return {
         text: '섹션을 삭제했어.',
-        toolCalls: [{ name: 'remove_section', args: { route: target.route, sectionId: target.section.id } }],
+        toolCalls: [
+          { name: 'remove_section', args: { route: target.route, sectionId: target.section.id } },
+        ],
       }
     }
 
@@ -99,7 +127,14 @@ export class MockLlmClient implements LlmClient {
       return {
         text: '제목을 줄였어.',
         toolCalls: [
-          { name: 'update_section', args: { route: target.route, sectionId: target.section.id, props: { title: shorten(props.title) } } },
+          {
+            name: 'update_section',
+            args: {
+              route: target.route,
+              sectionId: target.section.id,
+              props: { title: shorten(props.title) },
+            },
+          },
         ],
       }
     }
@@ -109,7 +144,12 @@ export class MockLlmClient implements LlmClient {
       const next = options.find((v) => v !== target.section.variant) ?? target.section.variant
       return {
         text: `레이아웃을 ${next}로 바꿨어.`,
-        toolCalls: [{ name: 'change_variant', args: { route: target.route, sectionId: target.section.id, variant: next } }],
+        toolCalls: [
+          {
+            name: 'change_variant',
+            args: { route: target.route, sectionId: target.section.id, variant: next },
+          },
+        ],
       }
     }
 

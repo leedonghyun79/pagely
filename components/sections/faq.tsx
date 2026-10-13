@@ -4,7 +4,11 @@ export function Faq({ section }: SectionProps<'faq'>) {
   const { title, items } = section.props
   const two = section.variant === 'two-column'
   return (
-    <section data-section-id={section.id} className="px-6 py-16" style={{ background: 'var(--o-bg)' }}>
+    <section
+      data-section-id={section.id}
+      className="px-6 py-16"
+      style={{ background: 'var(--o-bg)' }}
+    >
       <div className="mx-auto max-w-3xl">
         <h2 className="mb-8 text-center text-3xl font-bold">{title}</h2>
         {two ? (
@@ -22,7 +26,10 @@ export function Faq({ section }: SectionProps<'faq'>) {
               <details
                 key={i}
                 className="border bg-white/70 px-5 py-4"
-                style={{ borderRadius: 'var(--o-radius)', borderColor: 'color-mix(in srgb, var(--o-text) 12%, transparent)' }}
+                style={{
+                  borderRadius: 'var(--o-radius)',
+                  borderColor: 'color-mix(in srgb, var(--o-text) 12%, transparent)',
+                }}
               >
                 <summary className="cursor-pointer font-semibold">{it.q}</summary>
                 <p className="mt-2 text-sm opacity-70">{it.a}</p>

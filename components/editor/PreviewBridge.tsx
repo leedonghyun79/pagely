@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 
-export const MSG = { select: 'opennow:select', highlight: 'opennow:highlight' } as const
+export const MSG = { select: 'pagely:select', highlight: 'pagely:highlight' } as const
 
 /** iframe 안에서만 동작: 섹션 클릭 → 부모에 선택 전달, 부모의 하이라이트 요청 반영 */
 export function PreviewBridge() {
@@ -15,8 +15,13 @@ export function PreviewBridge() {
     document.head.appendChild(style)
 
     const mark = (id: string | null) => {
-      document.querySelectorAll('[data-selected]').forEach((el) => el.removeAttribute('data-selected'))
-      if (id) document.querySelector(`[data-section-id="${CSS.escape(id)}"]`)?.setAttribute('data-selected', '')
+      document
+        .querySelectorAll('[data-selected]')
+        .forEach((el) => el.removeAttribute('data-selected'))
+      if (id)
+        document
+          .querySelector(`[data-section-id="${CSS.escape(id)}"]`)
+          ?.setAttribute('data-selected', '')
     }
 
     const onClick = (e: MouseEvent) => {

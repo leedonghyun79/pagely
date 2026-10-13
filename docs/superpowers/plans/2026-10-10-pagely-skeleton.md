@@ -1,6 +1,6 @@
-# Opennow Skeleton Implementation Plan
+# Pagely Skeleton Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans (inline) to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax. Spec: `docs/product-specs/opennow-skeleton.md`. Git repo가 아직 없어서 커밋 스텝은 없다. 필요하면 `git init` 후 태스크 단위로 커밋.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans (inline) to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax. Spec: `docs/product-specs/pagely-skeleton.md`. Git repo가 아직 없어서 커밋 스텝은 없다. 필요하면 `git init` 후 태스크 단위로 커밋.
 
 **Goal:** 스키마 기반 AI 웹빌더의 얇은 전체 뼈대(3단 에디터, 렌더러, 패치/되돌리기, mock AI, SEO)를 동작시킨다.
 
@@ -12,24 +12,24 @@
 
 ## File Structure
 
-| 파일 | 책임 |
-|------|------|
-| `lib/schema/section.ts` | 섹션 타입별 props Zod 스키마, `SectionSchema` |
-| `lib/schema/site.ts` | `DesignTokens`, `Page`, `Site` 스키마 |
-| `lib/site/ops.ts` | 순수 함수 `applyOps(site, ops)` (섹션 추가/삭제/이동/수정/variant/토큰) |
-| `lib/site/draft.ts` | 브리프 → 초안 `Site` |
-| `lib/site/seo.ts` | sitemap, robots, JSON-LD 생성 |
-| `lib/ai/tools.ts` | 툴 이름 → Zod 인자 스키마 → Op 변환 |
-| `lib/ai/llm.ts` | `LlmClient` 인터페이스 |
-| `lib/ai/mock.ts` | 키워드 규칙 기반 `MockLlmClient` |
-| `lib/ai/run.ts` | 메시지 → 툴 호출 검증 → 적용 |
-| `lib/db/index.ts` | SQLite repository (sites, revisions) |
-| `components/sections/*` | hero/features/faq/cta/testimonials + `registry.tsx` |
-| `components/editor/*` | `SiteTree`, `PreviewPane`, `ChatPane`, `EditorShell` |
-| `store/editor.ts` | 선택 섹션, 디바이스, 채팅 상태 |
-| `app/preview/[siteId]/[[...route]]/page.tsx` | 렌더러 |
-| `app/api/sites/...` | sites, ops, chat, revisions Route Handler |
-| `app/(editor)/editor/[siteId]/page.tsx`, `app/page.tsx` | 에디터 화면, 브리프 입력 |
+| 파일                                                    | 책임                                                                    |
+| ------------------------------------------------------- | ----------------------------------------------------------------------- |
+| `lib/schema/section.ts`                                 | 섹션 타입별 props Zod 스키마, `SectionSchema`                           |
+| `lib/schema/site.ts`                                    | `DesignTokens`, `Page`, `Site` 스키마                                   |
+| `lib/site/ops.ts`                                       | 순수 함수 `applyOps(site, ops)` (섹션 추가/삭제/이동/수정/variant/토큰) |
+| `lib/site/draft.ts`                                     | 브리프 → 초안 `Site`                                                    |
+| `lib/site/seo.ts`                                       | sitemap, robots, JSON-LD 생성                                           |
+| `lib/ai/tools.ts`                                       | 툴 이름 → Zod 인자 스키마 → Op 변환                                     |
+| `lib/ai/llm.ts`                                         | `LlmClient` 인터페이스                                                  |
+| `lib/ai/mock.ts`                                        | 키워드 규칙 기반 `MockLlmClient`                                        |
+| `lib/ai/run.ts`                                         | 메시지 → 툴 호출 검증 → 적용                                            |
+| `lib/db/index.ts`                                       | SQLite repository (sites, revisions)                                    |
+| `components/sections/*`                                 | hero/features/faq/cta/testimonials + `registry.tsx`                     |
+| `components/editor/*`                                   | `SiteTree`, `PreviewPane`, `ChatPane`, `EditorShell`                    |
+| `store/editor.ts`                                       | 선택 섹션, 디바이스, 채팅 상태                                          |
+| `app/preview/[siteId]/[[...route]]/page.tsx`            | 렌더러                                                                  |
+| `app/api/sites/...`                                     | sites, ops, chat, revisions Route Handler                               |
+| `app/(editor)/editor/[siteId]/page.tsx`, `app/page.tsx` | 에디터 화면, 브리프 입력                                                |
 
 ---
 
@@ -37,9 +37,9 @@
 
 **Files:** Modify `CLAUDE.md`, `ARCHITECTURE.md`, `README.md`, `.env.example`
 
-- [ ] **Step 1:** `CLAUDE.md`의 `{PROJECT_NAME}`을 `Opennow`로, 스택 줄에 `Zod · better-sqlite3`를 추가한다.
+- [ ] **Step 1:** `CLAUDE.md`의 `{PROJECT_NAME}`을 `Pagely`로, 스택 줄에 `Zod · better-sqlite3`를 추가한다.
 - [ ] **Step 2:** `ARCHITECTURE.md`에 위 File Structure 표와 데이터 흐름(`UI/채팅 → ops → applyOps → Revision → 프리뷰 postMessage 갱신`)을 쓴다.
-- [ ] **Step 3:** `.env.example`에 `DATABASE_PATH=./data/opennow.db`를 추가하고 `.gitignore`에 `data/`를 넣는다.
+- [ ] **Step 3:** `.env.example`에 `DATABASE_PATH=./data/pagely.db`를 추가하고 `.gitignore`에 `data/`를 넣는다.
 
 ### Task 2: 스키마 (TDD)
 
@@ -48,50 +48,70 @@
 - [ ] **Step 1: 실패하는 테스트**
 
 ```ts
-import { describe, it, expect } from "vitest";
-import { SectionSchema } from "@/lib/schema/section";
+import { describe, it, expect } from 'vitest'
+import { SectionSchema } from '@/lib/schema/section'
 
-describe("SectionSchema", () => {
-  it("hero 섹션을 통과시킨다", () => {
+describe('SectionSchema', () => {
+  it('hero 섹션을 통과시킨다', () => {
     const r = SectionSchema.safeParse({
-      id: "sec_1", type: "hero", variant: "centered",
-      props: { title: "제목", subtitle: "부제", cta: [{ label: "문의", href: "/contact" }] },
-    });
-    expect(r.success).toBe(true);
-  });
-  it("알 수 없는 type은 거부한다", () => {
-    expect(SectionSchema.safeParse({ id: "x", type: "nope", variant: "a", props: {} }).success).toBe(false);
-  });
-  it("hero title이 없으면 거부한다", () => {
-    expect(SectionSchema.safeParse({ id: "x", type: "hero", variant: "centered", props: {} }).success).toBe(false);
-  });
-});
+      id: 'sec_1',
+      type: 'hero',
+      variant: 'centered',
+      props: { title: '제목', subtitle: '부제', cta: [{ label: '문의', href: '/contact' }] },
+    })
+    expect(r.success).toBe(true)
+  })
+  it('알 수 없는 type은 거부한다', () => {
+    expect(
+      SectionSchema.safeParse({ id: 'x', type: 'nope', variant: 'a', props: {} }).success
+    ).toBe(false)
+  })
+  it('hero title이 없으면 거부한다', () => {
+    expect(
+      SectionSchema.safeParse({ id: 'x', type: 'hero', variant: 'centered', props: {} }).success
+    ).toBe(false)
+  })
+})
 ```
 
 - [ ] **Step 2:** `npx vitest run __tests__/schema.test.ts` → FAIL (모듈 없음)
 - [ ] **Step 3: 구현** `lib/schema/section.ts`
 
 ```ts
-import { z } from "zod";
+import { z } from 'zod'
 
-const Cta = z.object({ label: z.string().min(1), href: z.string().min(1) });
+const Cta = z.object({ label: z.string().min(1), href: z.string().min(1) })
 
 export const SECTION_VARIANTS = {
-  hero: ["centered", "split"],
-  features: ["grid", "list"],
-  faq: ["accordion", "two-column"],
-  cta: ["banner", "card"],
-  testimonials: ["cards", "quote"],
-} as const;
-export type SectionType = keyof typeof SECTION_VARIANTS;
+  hero: ['centered', 'split'],
+  features: ['grid', 'list'],
+  faq: ['accordion', 'two-column'],
+  cta: ['banner', 'card'],
+  testimonials: ['cards', 'quote'],
+} as const
+export type SectionType = keyof typeof SECTION_VARIANTS
 
 export const PropsByType = {
-  hero: z.object({ eyebrow: z.string().optional(), title: z.string().min(1), subtitle: z.string().optional(), cta: z.array(Cta).default([]) }),
-  features: z.object({ title: z.string().min(1), items: z.array(z.object({ title: z.string(), body: z.string() })).min(1) }),
-  faq: z.object({ title: z.string().min(1), items: z.array(z.object({ q: z.string(), a: z.string() })).min(1) }),
+  hero: z.object({
+    eyebrow: z.string().optional(),
+    title: z.string().min(1),
+    subtitle: z.string().optional(),
+    cta: z.array(Cta).default([]),
+  }),
+  features: z.object({
+    title: z.string().min(1),
+    items: z.array(z.object({ title: z.string(), body: z.string() })).min(1),
+  }),
+  faq: z.object({
+    title: z.string().min(1),
+    items: z.array(z.object({ q: z.string(), a: z.string() })).min(1),
+  }),
   cta: z.object({ title: z.string().min(1), body: z.string().optional(), button: Cta }),
-  testimonials: z.object({ title: z.string().min(1), items: z.array(z.object({ name: z.string(), quote: z.string() })).min(1) }),
-} as const;
+  testimonials: z.object({
+    title: z.string().min(1),
+    items: z.array(z.object({ name: z.string(), quote: z.string() })).min(1),
+  }),
+} as const
 
 const make = <T extends SectionType>(type: T) =>
   z.object({
@@ -99,45 +119,53 @@ const make = <T extends SectionType>(type: T) =>
     type: z.literal(type),
     variant: z.enum(SECTION_VARIANTS[type]),
     props: PropsByType[type],
-  });
+  })
 
-export const SectionSchema = z.discriminatedUnion("type", [
-  make("hero"), make("features"), make("faq"), make("cta"), make("testimonials"),
-]);
-export type Section = z.infer<typeof SectionSchema>;
+export const SectionSchema = z.discriminatedUnion('type', [
+  make('hero'),
+  make('features'),
+  make('faq'),
+  make('cta'),
+  make('testimonials'),
+])
+export type Section = z.infer<typeof SectionSchema>
 ```
 
 `lib/schema/site.ts`
 
 ```ts
-import { z } from "zod";
-import { SectionSchema } from "./section";
+import { z } from 'zod'
+import { SectionSchema } from './section'
 
 export const DesignTokensSchema = z.object({
   primary: z.string().regex(/^#[0-9a-fA-F]{6}$/),
   background: z.string().regex(/^#[0-9a-fA-F]{6}$/),
   text: z.string().regex(/^#[0-9a-fA-F]{6}$/),
-  font: z.enum(["sans", "serif"]),
+  font: z.enum(['sans', 'serif']),
   radius: z.number().int().min(0).max(32),
-});
-export type DesignTokens = z.infer<typeof DesignTokensSchema>;
+})
+export type DesignTokens = z.infer<typeof DesignTokensSchema>
 
 export const PageSchema = z.object({
   route: z.string().regex(/^\/[a-z0-9-/]*$/),
   title: z.string().min(1),
-  seo: z.object({ description: z.string().default(""), ogImage: z.string().optional(), noindex: z.boolean().default(false) }),
+  seo: z.object({
+    description: z.string().default(''),
+    ogImage: z.string().optional(),
+    noindex: z.boolean().default(false),
+  }),
   sections: z.array(SectionSchema),
-});
-export type Page = z.infer<typeof PageSchema>;
+})
+export type Page = z.infer<typeof PageSchema>
 
 export const SiteSchema = z.object({
   id: z.string(),
   name: z.string().min(1),
-  locale: z.string().default("ko"),
+  locale: z.string().default('ko'),
   tokens: DesignTokensSchema,
   pages: z.array(PageSchema).min(1),
-});
-export type Site = z.infer<typeof SiteSchema>;
+})
+export type Site = z.infer<typeof SiteSchema>
 ```
 
 - [ ] **Step 4:** 같은 명령 → PASS

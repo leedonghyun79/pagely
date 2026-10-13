@@ -19,7 +19,10 @@ export const GET = () => handle(() => listSites())
 export const POST = (req: Request) =>
   handle(async () => {
     const body = await req.json()
-    const brief = body && typeof body === 'object' && 'idea' in body ? parseIdea(IdeaSchema.parse(body).idea) : BriefSchema.parse(body)
+    const brief =
+      body && typeof body === 'object' && 'idea' in body
+        ? parseIdea(IdeaSchema.parse(body).idea)
+        : BriefSchema.parse(body)
     const site = createDraft(brief)
     saveSite(site)
     return site

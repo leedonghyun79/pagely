@@ -18,15 +18,18 @@
 ### Vercel
 
 **자동 배포**
+
 - `main` 브랜치 push → 프로덕션 자동 배포
 - 다른 브랜치 push → 프리뷰 URL 자동 생성
 
 **수동 배포**
+
 ```bash
 npx vercel --prod
 ```
 
 **롤백**
+
 1. Vercel 대시보드 → Deployments
 2. 마지막 정상 배포 → "..." → "Promote to Production"
 
@@ -35,9 +38,11 @@ npx vercel --prod
 ### AWS (Amplify / EC2 / ECS)
 
 **자동 배포**
+
 - GitHub Actions → AWS 배포 파이프라인 연결
 
 **수동 배포**
+
 ```bash
 # Amplify
 amplify publish
@@ -47,6 +52,7 @@ aws ecs update-service --cluster {cluster} --service {service} --force-new-deplo
 ```
 
 **롤백**
+
 - Amplify: 대시보드 → 이전 빌드 → Redeploy
 - ECS: 이전 태스크 정의 버전으로 서비스 업데이트
 
@@ -55,14 +61,17 @@ aws ecs update-service --cluster {cluster} --service {service} --force-new-deplo
 ### Railway
 
 **자동 배포**
+
 - GitHub 연결 시 `main` 브랜치 push → 자동 배포
 
 **수동 배포**
+
 ```bash
 railway up
 ```
 
 **롤백**
+
 - Railway 대시보드 → Deployments → 이전 배포 → Rollback
 
 ---
@@ -70,11 +79,13 @@ railway up
 ### Fly.io
 
 **자동 배포**
+
 ```bash
 fly deploy
 ```
 
 **롤백**
+
 ```bash
 fly releases list
 fly deploy --image {이전 이미지}
@@ -84,9 +95,9 @@ fly deploy --image {이전 이미지}
 
 ## 환경 변수
 
-| 변수 | 필수 여부 | 설명 | 환경 |
-|------|-----------|------|------|
-| {변수명} | 필수 | {설명} | production |
+| 변수     | 필수 여부 | 설명   | 환경       |
+| -------- | --------- | ------ | ---------- |
+| {변수명} | 필수      | {설명} | production |
 
 > `.env.local`은 절대 git에 커밋하지 않는다.
 > `.env.example`에 키 목록만 커밋한다.
@@ -95,11 +106,11 @@ fly deploy --image {이전 이미지}
 
 ## 환경 구분
 
-| 환경 | 브랜치 | URL |
-|------|--------|-----|
-| production | `main` | {프로덕션 URL} |
-| staging | `staging` | {스테이징 URL} |
-| preview | PR 브랜치 | 자동 생성 |
+| 환경       | 브랜치    | URL            |
+| ---------- | --------- | -------------- |
+| production | `main`    | {프로덕션 URL} |
+| staging    | `staging` | {스테이징 URL} |
+| preview    | PR 브랜치 | 자동 생성      |
 
 ---
 

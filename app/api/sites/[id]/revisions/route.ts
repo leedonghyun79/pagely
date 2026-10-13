@@ -6,7 +6,12 @@ export const dynamic = 'force-dynamic'
 
 export const GET = (_req: Request, { params }: RouteCtx) =>
   handle(async () =>
-    listRevisions((await params).id).map(({ id, summary, author, createdAt }) => ({ id, summary, author, createdAt })),
+    listRevisions((await params).id).map(({ id, summary, author, createdAt }) => ({
+      id,
+      summary,
+      author,
+      createdAt,
+    }))
   )
 
 const BodySchema = z.object({ revisionId: z.string().min(1) })
