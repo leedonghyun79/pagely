@@ -100,7 +100,7 @@ fly deploy --image {이전 이미지}
 | {변수명} | 필수      | {설명} | production |
 
 > `.env.local`은 절대 git에 커밋하지 않는다.
-> `.env.example`에 키 목록만 커밋한다.
+> 필요한 변수 목록은 위 표에 적는다 (값은 적지 않는다).
 
 ---
 
